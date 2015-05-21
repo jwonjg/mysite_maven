@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="comment">
+	<typeAlias alias="CommentVo" type="com.sds.icto.mysite.domain.CommentVo" />
+	
+	<insert id="insert" parameterClass="CommentVo">
+		<![CDATA[
+		insert into board_comment values (BOARD_COMMENT_SEQ.nextval, #userNo#, #content#, SYSDATE, #boardNo#, #orderNo#)
+		]]>  
+	</insert>
+	
+	<select id="selectMaxOrderNo">
+		<![CDATA[
+		select max(order_no)+1 from board_comment where board_no = ?
+		]]>  
+	</select>
+	
+	<select id="selectAll" resultClass="BoardVo">
+		<![CDATA[
+		select c.no no, c.user_no userNo, c.content content, c.reg_date regDate, c.order_no orderNo, m.name userName from board_comment c, member m where c.user_no = m.no and c.board_no = #boardNo# order by order_no
+		]]>  
+	</select>
+
+	<delete id="delete">
+		<![CDATA[
+		delete from comment where no=#no# and userNo=#userNo#
+		]]>  
+	</delete>
+	
+</sqlMap> 

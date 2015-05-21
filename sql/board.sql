@@ -1,0 +1,27 @@
+DROP TABLE BOARD
+
+delete from board
+
+CREATE TABLE BOARD (
+  NO NUMBER(8) NOT NULL,
+  USER_NO NUMBER(8), 
+  TITLE VARCHAR2(50),
+  CONTENT VARCHAR2(2000),
+  FILE_NAME VARCHAR2(50),
+  CLICKS NUMBER(8),
+  REG_DATE DATE,
+  PRIMARY KEY (NO) 
+);
+
+alter table BOARD add constraint BOARD_FK_CONTRAINT foreign key (user_no) references MEMBER(no) on delete cascade; 
+
+CREATE SEQUENCE BOARD_SEQ
+INCREMENT BY 1
+START WITH 1
+MAXVALUE 9999999
+NOCACHE
+NOCYCLE;
+   
+select BOARD_SEQ.nextval from dual;
+
+select * from BOARD;

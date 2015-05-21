@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="member">
+	<typeAlias alias="MemberVo" type="com.sds.icto.mysite.domain.MemberVo" />
+	
+	<insert id="insert" parameterClass="MemberVo">
+		<![CDATA[
+		insert into member values(member_no_seq.nextval, #name#, #email#, #password#, #gender#)
+		]]>  
+	</insert>
+	
+	<select id="selectMember" resultClass="MemberVo">
+		<![CDATA[
+		select * from member where email=#email# and password=#password#
+		]]>  
+	</select>
+	
+ 	<update id="update" parameterClass="MemberVo">
+		<![CDATA[
+		update member set email=#email#, name=#name#, password=#password#, gender=#gender# where no=#no#
+		]]>  
+	</update>
+	
+</sqlMap> 

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="board">
+	<typeAlias alias="BoardVo" type="com.sds.icto.mysite.domain.BoardVo" />
+	
+	<insert id="insert" parameterClass="BoardVo">
+		<![CDATA[
+		insert into board values (BOARD_SEQ.nextval, #userNo#, #title#, #content#, #fileName#, 0, SYSDATE)
+		]]>  
+	</insert>
+	
+	<select id="selectAll" resultClass="BoardVo">
+		<![CDATA[
+		select b.no no, b.user_no userNo, b.title title, b.content content, b.file_name fileName, b.clicks clicks, b.reg_date regDate, m.name userName from board b, member m where b.user_no = m.no
+		]]>  
+	</select>
+
+	<select id="selectBoard" resultClass="BoardVo">
+		<![CDATA[
+		select b.no as no, b.user_no as userNo, b.title as title, b.content as content, b.file_name as fileName, b.clicks as clicks, b.reg_date as regDate, m.name as userName from board b, member m where b.user_no = m.no and b.no=#selectNo#
+		]]>  
+	</select>
+	
+	<update id="update" parameterClass="BoardVo">
+		<![CDATA[
+		update board set title = #title#, content = #content#, file_name = #fileName#, reg_date = sysdate where no = #no#
+		]]>  
+	</update>
+	
+	<update id="updateClick">
+		<![CDATA[
+		update board set clicks = (select clicks+1 from board where no = #no#) where no = #no#
+		]]>  
+	</update>
+	
+	<delete id="delete">
+		<![CDATA[
+		delete from board where no=#no# and userNo=#userNo#
+		]]>  
+	</delete>
+	
+	<select id="search" resultClass="BoardVo">
+		<![CDATA[
+		select b.no no, b.user_no userNo, b.title title, b.content content, b.file_name fileName, b.clicks clicks, b.reg_date regDate, m.name userName 
+		from board b, member m 
+		where b.user_no = m.no 
+		]]>  
+		<dynamic>
+			<isEqual property="option" compareValue="title" prepend="and">
+			b.title like '%$keyword$%'
+			</isEqual>
+			<isEqual property="option" compareValue="content" prepend="and">
+			b.content like '%$keyword$%'
+			</isEqual>
+			<isEqual property="option" compareValue="both" prepend="and">
+			(b.title like '%$keyword$%' or b.content like '%$keyword$%')
+			</isEqual>
+		</dynamic>
+	</select>
+	
+</sqlMap> 
